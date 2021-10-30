@@ -1,5 +1,8 @@
 # Local .terraform directories
 **/.terraform/*
+.terraform
+*.tfstate
+*.tfstate.backup
 
 # .tfstate files
 *.tfstate
@@ -20,6 +23,9 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+# Terragrunt
+.terragrunt-cache
 
 # Include override files you do wish to add to version control using negated pattern
 #
