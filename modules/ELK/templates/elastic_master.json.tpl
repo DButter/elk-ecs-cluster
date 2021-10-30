@@ -28,6 +28,10 @@
           "value": "${name}"
         },
         {
+          "name": "node.name",
+          "value": "${node_name}"
+        },
+        {
           "name": "cluster.initial_master_nodes",
           "value": "${masters}"
         },
