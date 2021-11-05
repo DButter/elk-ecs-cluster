@@ -31,3 +31,8 @@ variable "webaccess_security_groups" {
   type        = list(string)
   default = null
 }
+
+variable "dns" {
+  description = "private dns name"
+  type        = string
+}

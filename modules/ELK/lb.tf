@@ -48,3 +48,15 @@ resource "aws_lb_target_group" "this" {
     protocol = "HTTP"
   }
 }
+
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "elastic.${var.dns}"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.this.dns_name
+    zone_id                = aws_lb.this.zone_id
+    evaluate_target_health = true
+  }
+}

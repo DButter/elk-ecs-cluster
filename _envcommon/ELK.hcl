@@ -33,6 +33,7 @@ inputs = {
   subnets = local.subnets
   vpc_id = local.vpc_id
   webaccess_security_groups = [local.gateway_security_group]
+  dns = "${local.env}.com"
   tags = {
     name = "ELK-${local.env}"
   }
