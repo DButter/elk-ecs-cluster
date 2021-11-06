@@ -1,5 +1,5 @@
 locals {
-  name = "${var.name}-${random_id.this.id}"
+  name = "${var.name}-${random_string.this.id}"
   docker_def = templatefile("./templates/elastic.json.tpl",
  {
    name                = local.name
@@ -15,6 +15,7 @@ locals {
 
 }
 
-resource "random_id" "this" {
-  byte_length = 8
+resource "random_string" "this" {
+  length = 8
+  special= false
 }
