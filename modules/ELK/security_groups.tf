@@ -23,6 +23,15 @@ resource "aws_security_group" this {
     to_port     = 9400
     self = true
   }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 5000
+    to_port     = 5000
+    self = true
+    cidr_blocks = var.webaccess_cidr_blocks
+    security_groups = concat(var.webaccess_security_groups, [aws_security_group.allow_http_and_https.id])
+  }
   tags = var.tags
 }
 

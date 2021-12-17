@@ -52,7 +52,7 @@ resource "aws_ecs_service" ELK_slave {
 
   task_definition  = aws_ecs_task_definition.ELK_slave.arn
   cluster          = aws_ecs_cluster.this.id
-  desired_count    = 1
+  desired_count    = 5
   launch_type      = "FARGATE"
   platform_version = "1.4.0"
 
@@ -130,6 +130,44 @@ resource "aws_ecs_service" ELK_master {
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
     container_port   = local.elastic_http_port
+    container_name   = local.name
+  }
+}
+
+resource "aws_ecs_task_definition" ELK_hq {
+  family = "${local.name}-elastic-hq"
+
+  task_role_arn            = aws_iam_role.ecs_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 1024
+  memory                   = 2048
+  container_definitions    = local.docker_hq_def
+}
+
+resource "aws_ecs_service" ELK_hq {
+  name = "${local.name}-elastic-hq"
+
+  task_definition  = aws_ecs_task_definition.ELK_hq.arn
+  cluster          = aws_ecs_cluster.this.id
+  desired_count    = 1
+  launch_type      = "FARGATE"
+  platform_version = "1.4.0"
+
+  // Assuming we cannot have more than one instance at a time. Ever.
+  deployment_maximum_percent         = 100
+  deployment_minimum_healthy_percent = 0
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = [aws_security_group.this.id, aws_security_group.allow_http_and_https.id]
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.this_hq.arn
+    container_port   = local.elastic_hq_http_port
     container_name   = local.name
   }
 }

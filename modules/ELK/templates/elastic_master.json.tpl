@@ -126,7 +126,7 @@
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${region}",
-            "awslogs-stream-prefix": "controller"
+            "awslogs-stream-prefix": "master"
         }
       }
     }

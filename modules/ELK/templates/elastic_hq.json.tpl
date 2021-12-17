@@ -4,40 +4,14 @@
       "image": "${container_image}",
       "essential": true,
       "portMappings": [{
-  			"hostPort": 9200,
+  			"hostPort": 5000,
   			"protocol": "tcp",
-  			"containerPort": 9200
-  		},
-      {
-  			"hostPort": 9300,
-  			"protocol": "tcp",
-  			"containerPort": 9300
+  			"containerPort": 5000
   		}],
-      "healthCheck": {
-        "command": [
-          "CMD-SHELL","curl -I -f --max-time 5 http://localhost:9200 || exit 1"
-        ],
-        "interval": 10,
-        "startPeriod": 60,
-        "retries": 5,
-        "timeout": 5
-      },
       "environment": [
         {
-          "name": "cluster.name",
-          "value": "${name}"
-        },
-        {
-          "name": "cluster.initial_master_nodes",
-          "value": "${masters}"
-        },
-        {
-          "name": "discovery.seed_hosts",
-          "value": "${discovery_seed_hosts}"
-        },
-        {
-          "name": "node.store.allow_mmap",
-          "value": "false"
+          "name": "HQ_DEFAULT_URL",
+          "value": "${default_url}"
         }
       ],
       "ulimits": [{
@@ -122,7 +96,7 @@
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${region}",
-            "awslogs-stream-prefix": "slave"
+            "awslogs-stream-prefix": "elastic_hq"
         }
       }
     }
