@@ -111,7 +111,7 @@ def lambda_handler(event, context):
 
 def delete_index(idx_name):
     try:
-        url = "%s/%s?refresh=true" % (tornado.options.options.es_url, idx_name)
+        url = "%s/%s" % (tornado.options.options.es_url, idx_name)
         request = tornado.httpclient.HTTPRequest(url, headers=headers, method="DELETE", request_timeout=240, auth_username=tornado.options.options.username, auth_password=tornado.options.options.password, validate_cert=tornado.options.options.validate_cert)
         response = tornado.httpclient.HTTPClient().fetch(request)
         logging.info('Deleting index  "%s" done   %s' % (idx_name, response.body))
@@ -124,8 +124,7 @@ def create_index(idx_name):
         "settings": {
             "number_of_shards":   tornado.options.options.num_of_shards,
             "number_of_replicas": tornado.options.options.num_of_replicas
-        },
-        "refresh": True
+        }
     }
 
     body = json.dumps(schema)
