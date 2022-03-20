@@ -171,3 +171,35 @@ resource "aws_ecs_service" ELK_hq {
     container_name   = local.name
   }
 }
+
+resource "aws_ecs_task_definition" Load_generator {
+  family = "${local.name}-load-generator"
+
+  task_role_arn            = aws_iam_role.ecs_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 2048
+  memory                   = 4096
+  container_definitions    = local.docker_load_def
+}
+
+resource "aws_ecs_service" Load_generator {
+  name = "${local.name}-load-generator"
+
+  task_definition  = aws_ecs_task_definition.Load_generator.arn
+  cluster          = aws_ecs_cluster.this.id
+  desired_count    = 0
+  launch_type      = "FARGATE"
+  platform_version = "1.4.0"
+
+  // Assuming we cannot have more than one instance at a time. Ever.
+  deployment_maximum_percent         = 100
+  deployment_minimum_healthy_percent = 0
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = [aws_security_group.this.id, aws_security_group.allow_http_and_https.id]
+    assign_public_ip = true
+  }
+}

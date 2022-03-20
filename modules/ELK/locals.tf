@@ -23,6 +23,17 @@ locals {
   region              = "eu-central-1"
 })
  elastic_hq_url = "elastic_hq.${var.dns}"
+
+ docker_load_def = templatefile("./templates/elastic_load_generator.json.tpl",
+{
+ name                = local.name
+ default_url         = "http://${local.elastic_url}:80"
+ container_image     = "oliver006/es-test-data"
+ log_group           = aws_cloudwatch_log_group.ELK_log_group.name
+ region              = "eu-central-1"
+ batch_size          = 10000
+ count               = 1000000
+})
 }
 
 
