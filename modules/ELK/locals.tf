@@ -31,6 +31,7 @@ locals {
  container_image     = "oliver006/es-test-data"
  log_group           = aws_cloudwatch_log_group.ELK_log_group.name
  region              = "eu-central-1"
+ http_upload_timeout = 30
  batch_size          = 10000
  count               = 1000000
 })

@@ -9,7 +9,8 @@
   			"es_test_data.py",
   			"--es_url=${default_url}",
         "--batch_size=${batch_size}",
-        "--count=${count}"
+        "--count=${count}",
+        "--http_upload_timeout=${http_upload_timeout}"
   		],
       "environment": [
       ],
