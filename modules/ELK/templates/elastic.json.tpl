@@ -38,6 +38,10 @@
         {
           "name": "node.store.allow_mmap",
           "value": "false"
+        },
+        {
+          "name": "node.roles",
+          "value": "data,master,voting_only"
         }
       ],
       "ulimits": [{
