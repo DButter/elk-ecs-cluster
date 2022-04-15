@@ -20,7 +20,8 @@ data "aws_iam_policy_document" ecs_execution_policy {
       "ecr:BatchGetImage",
       "logs:CreateLogStream",
       "logs:CreateLogGroup",
-      "logs:PutLogEvents"
+      "logs:PutLogEvents",
+      "ecs:StartTelemetrySession"
     ]
     resources = ["*"]
   }
